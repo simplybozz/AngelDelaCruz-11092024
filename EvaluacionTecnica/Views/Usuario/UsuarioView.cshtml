@@ -1,0 +1,268 @@
+﻿@model IEnumerable<EvaluacionTecnica.Models.Usuario>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <!-- Lista de Usuarios -->
+    <div class="container">
+        <h2 class="title">Lista de Usuarios</h2>
+
+        @if (Model != null && Model.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Cédula</th>
+                        <th>Nombre de Usuario</th>
+                        <th>Fecha Nacimiento</th>
+                        <th>Usuario Transacción</th>
+                        <th>Fecha Transacción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var usuario in Model)
+                    {
+                        <tr>
+                            <td>@usuario.Id</td>
+                            <td>@usuario.Nombre</td>
+                            <td>@usuario.Apellido</td>
+                            <td>@usuario.Cedula</td>
+                            <td>@usuario.UsuarioNombre</td>
+                            <td>@usuario.FechaNacimiento?.ToString("yyyy-MM-dd")</td>
+                            <td>@usuario.UsuarioTransaccion</td>
+                            <td>@usuario.FechaTransaccion?.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No hay usuarios disponibles.</p>
+        }
+    </div>
+
+    <br>
+    <br>
+
+    <!-- Agregar Usuario -->
+    <div class="container">
+        <h2 class="title">Agregar Nuevo Usuario</h2>
+        <form id="agregarUsuarioForm" class="form" action="@Url.Action("AgregarUsu", "Usuario")" method="post">
+            <div class="form-group">
+                <label for="RolesId">ID Del Rol</label>
+                <input type="text" name="RolesId" id="RolesId" class="form-control" required placeholder="ID De Rol" />
+            </div>
+
+            <div class="form-group">
+                <label for="Nombre">Nombre</label>
+                <input type="text" name="Nombre" id="Nombre" class="form-control" required placeholder="Nombre" />
+            </div>
+
+            <div class="form-group">
+                <label for="Apellido">Apellido</label>
+                <input type="text" name="Apellido" id="Apellido" class="form-control" required placeholder="Apellido" />
+            </div>
+
+            <div class="form-group">
+                <label for="Cedula">Cédula</label>
+                <input type="number" name="Cedula" id="Cedula" class="form-control" required placeholder="Cédula" />
+            </div>
+
+            <div class="form-group">
+                <label for="UsuarioNombre">Nombre de Usuario</label>
+                <input type="text" name="UsuarioNombre" id="UsuarioNombre" class="form-control" required placeholder="Nombre de Usuario" />
+            </div>
+
+            <div class="form-group">
+                <label for="Contrasena">Contraseña</label>
+                <input type="password" name="Contrasena" id="Contrasena" class="form-control" required placeholder="Contraseña" />
+            </div>
+
+            <div class="form-group">
+                <label for="FechaNacimiento">Fecha de Nacimiento</label>
+                <input type="date" name="FechaNacimiento" id="FechaNacimiento" class="form-control" required />
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Agregar Usuario</button>
+        </form>
+    </div>
+
+    <br>
+    <br>
+
+    <!-- Eliminar Usuario -->
+    <div class="container">
+        <h2 class="title">Eliminar Usuario</h2>
+        <form id="eliminarUsuarioForm" class="form" action="@Url.Action("EliminarUsu", "Usuario")" method="post">
+            <div class="form-group">
+                <label for="IdEliminar">ID del Usuario a Eliminar</label>
+                <input type="number" name="Id" id="IdEliminar" class="form-control" required placeholder="Ingrese el ID del usuario" />
+            </div>
+            <br>
+            <button type="submit" class="btn btn-danger">Eliminar Usuario</button>
+        </form>
+    </div>
+
+    <br>
+    <br>
+
+    <!-- Actualizar Usuario -->
+    <div class="container">
+        <h2 class="title">Actualizar Usuario</h2>
+        <form id="actualizarUsuarioForm" class="form" action="@Url.Action("ActualizarUsu", "Usuario")" method="post">
+            <div class="form-group">
+                <label for="IdActualizar">Seleccione un Usuario</label>
+                <select id="IdActualizar" name="Id" class="form-control" required>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var usuario in Model)
+                        {
+                            <option value="@usuario.Id">@usuario.Nombre @usuario.Apellido</option>
+                        }
+                    }
+                    else
+                    {
+                        <option value="">No hay usuarios disponibles</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="RolesIdActualizar">ID Del Rol</label>
+                <input type="number" name="RolesId" id="RolesIdActualizar" class="form-control" required placeholder="Nuevo ID De Rol" />
+            </div>
+
+            <div class="form-group">
+                <label for="NombreActualizar">Nombre</label>
+                <input type="text" name="Nombre" id="NombreActualizar" class="form-control" required placeholder="Nuevo nombre" />
+            </div>
+
+            <div class="form-group">
+                <label for="ApellidoActualizar">Apellido</label>
+                <input type="text" name="Apellido" id="ApellidoActualizar" class="form-control" required placeholder="Nuevo apellido" />
+            </div>
+
+            <div class="form-group">
+                <label for="CedulaActualizar">Cédula</label>
+                <input type="number" name="Cedula" id="CedulaActualizar" class="form-control" required placeholder="Nueva cédula" />
+            </div>
+
+            <div class="form-group">
+                <label for="UsuarioNombreActualizar">Nombre de Usuario</label>
+                <input type="text" name="UsuarioNombre" id="UsuarioNombreActualizar" class="form-control" required placeholder="Nuevo nombre de usuario" />
+            </div>
+
+            <div class="form-group">
+                <label for="ContrasenaActualizar">Contraseña</label>
+                <input type="password" name="Contrasena" id="ContrasenaActualizar" class="form-control" required placeholder="Nueva contraseña" />
+            </div>
+
+            <div class="form-group">
+                <label for="FechaNacimientoActualizar">Fecha de Nacimiento</label>
+                <input type="date" name="FechaNacimiento" id="FechaNacimientoActualizar" class="form-control" required />
+            </div>
+
+            <br>
+            <button type="submit" class="btn btn-primary">Actualizar Usuario</button>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Maneja el formulario de agregar usuario
+            $('#agregarUsuarioForm').on('submit', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    success: function () {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Usuario agregado',
+                            text: 'El usuario ha sido agregado exitosamente.'
+                        }).then(() => {
+                            location.reload(); // Recarga la página para mostrar los cambios
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un problema al agregar el usuario.'
+                        });
+                    }
+                });
+            });
+
+            // Maneja el formulario de eliminar usuario
+            $('#eliminarUsuarioForm').on('submit', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    success: function () {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Usuario eliminado',
+                            text: 'El usuario ha sido eliminado exitosamente.'
+                        }).then(() => {
+                            location.reload(); // Recarga la página para mostrar los cambios
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Usuario no encontrado.'
+                        });
+                    }
+                });
+            });
+
+            // Maneja el formulario de actualizar usuario
+            $('#actualizarUsuarioForm').on('submit', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    success: function () {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Usuario actualizado',
+                            text: 'El usuario ha sido actualizado exitosamente.'
+                        }).then(() => {
+                            location.reload(); // Recarga la página para mostrar los cambios
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un problema al actualizar el usuario.'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+﻿@{
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="~/css/site.css" rel="stylesheet" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <!--Login-->
+    <div class="container">
+        <form id="loginForm" class="form">
+            <p class="title">Login</p>
+            <input placeholder="Usuario" class="username input" type="text" name="UsuarioNombre" required />
+            <input placeholder="Contraseña" class="password input" type="password" name="Contrasena" required />
+            <button class="btn" type="submit">Login</button>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#loginForm').on('submit', function (e) {
+                e.preventDefault(); // Evita el envío normal del formulario
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("ValidarUsuario", "Login")',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            window.location.href = response.redirectUrl; // Redirige en caso de éxito
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.mensaje
+                            });
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un problema inesperado.'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
