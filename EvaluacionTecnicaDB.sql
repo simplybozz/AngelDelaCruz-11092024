@@ -84,3 +84,5 @@ INSERT INTO Usuario (RolesId, Nombre, Apellido, Cedula, Usuario_Nombre, Contrase
 --Comprobando registros
 SELECT * FROM Roles;
 SELECT * FROM Usuario;
+
+
